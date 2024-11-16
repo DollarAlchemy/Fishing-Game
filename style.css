@@ -2,7 +2,7 @@
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    background-color: #87CEEB;
+    background-color: #87CEEB; /* Sky blue for the background */
     margin: 0;
     padding: 0;
 }
@@ -10,7 +10,7 @@ body {
 h1 {
     margin: 20px;
     font-size: 36px;
-    color: #2f4f4f;
+    color: #2f4f4f; /* Darker gray for the text */
 }
 
 #game-container {
@@ -27,10 +27,11 @@ h1 {
     position: relative;
     width: 70%;
     height: 100%;
-    background-color: #1e90ff;
+    background-color: #1e90ff; /* Water blue */
     border: 2px solid #1c86ee;
     overflow: hidden;
     border-radius: 10px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3); /* Subtle inner shadow */
 }
 
 /* Fishing Line */
@@ -41,7 +42,8 @@ h1 {
     background-color: black;
     left: 50%;
     top: 0;
-    display: none; /* Start hidden */
+    display: none; /* Initially hidden */
+    transition: height 0.3s ease-in-out; /* Smooth drop/retract animation */
 }
 
 /* Inventory Area */
@@ -51,7 +53,8 @@ h1 {
     background-color: #f4f4f4;
     border: 2px solid #ddd;
     padding: 10px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Subtle drop shadow */
+    border-radius: 10px; /* Rounded corners */
 }
 
 #inventory h2 {
@@ -69,6 +72,45 @@ h1 {
 #caught-fish li {
     font-size: 18px;
     margin: 5px 0;
+    background-color: #e3f2fd;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Fish Styling */
+.fish {
+    position: absolute;
+    width: 40px;
+    height: 20px;
+    background-color: orange;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add depth */
+    transition: all 2s ease; /* Smooth movement */
+}
+
+.fish:hover {
+    transform: scale(1.2); /* Slightly grow on hover */
+    cursor: pointer;
+}
+
+.fish[data-rarity="rare"] {
+    background-color: gold; /* Gold for rare fish */
+}
+
+.fish[data-rarity="legendary"] {
+    background-color: crimson; /* Crimson for legendary fish */
+    border: 2px solid white; /* White border for extra emphasis */
+    animation: glow 1.5s infinite alternate; /* Subtle glow effect */
+}
+
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+    }
+    100% {
+        box-shadow: 0 0 15px rgba(255, 255, 255, 1);
+    }
 }
 
 /* Controls */
@@ -79,11 +121,12 @@ h1 {
 #cast-button {
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #32cd32;
+    background-color: #32cd32; /* Green button */
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.2s ease-in-out; /* Smooth hover effect */
 }
 
 #cast-button:hover {
