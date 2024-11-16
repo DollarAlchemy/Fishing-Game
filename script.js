@@ -5,8 +5,8 @@ const castButton = document.getElementById("cast-button");
 const caughtFishList = document.getElementById("caught-fish");
 
 let isCasting = false; // Prevents multiple casts
-let fishInLake = []; // Tracks fish in the lake
-let isReeling = false; // Prevents reeling spam during minigame
+let fishInLake = []; // Tracks all fish in the lake
+let activeFish = null; // Tracks fish during reeling
 
 // Fish Types and Rarity
 const fishTypes = [
@@ -24,12 +24,14 @@ function castLine() {
     fishingLine.style.display = "block";
     fishingLine.style.height = "300px"; // Drop to a specific depth
 
-    // After the line is in the water for 3 seconds, check for fish
+    // After 3 seconds, check for fish
     setTimeout(() => {
-        if (checkForFish()) {
-            startReelingMinigame(); // If a fish is present, start reeling minigame
+        activeFish = checkForFish();
+        if (activeFish) {
+            startReelingMinigame(activeFish); // If a fish is detected, start reeling
         } else {
-            retractLine(); // If no fish, retract line
+            console.log("No fish detected!");
+            retractLine();
         }
     }, 3000);
 }
@@ -71,7 +73,7 @@ function spawnFish() {
 
 // Check if a Fish is Present
 function checkForFish() {
-    let fishCaught = null;
+    let caughtFish = null;
     fishInLake.forEach((fish) => {
         const fishRect = fish.getBoundingClientRect();
         const lineRect = fishingLine.getBoundingClientRect();
@@ -83,15 +85,15 @@ function checkForFish() {
             fishRect.top < lineRect.bottom &&
             fishRect.bottom > lineRect.top
         ) {
-            fishCaught = fish;
+            caughtFish = fish; // Fish caught
         }
     });
-    return fishCaught;
+    return caughtFish;
 }
 
 // Start Reeling Minigame
-function startReelingMinigame() {
-    isReeling = true; // Prevent other actions during reeling
+function startReelingMinigame(fish) {
+    console.log(`Fish detected: ${fish.dataset.name}`);
     const reelingBar = document.createElement("div");
     reelingBar.id = "reeling-bar";
 
@@ -107,7 +109,7 @@ function startReelingMinigame() {
         progressBar.style.width = `${progress}%`;
         if (progress >= 100) {
             clearInterval(reelingInterval);
-            finishReeling();
+            finishReeling(fish);
         }
     }, 200); // Progress bar increases over time
 
@@ -125,7 +127,8 @@ function startReelingMinigame() {
         document.removeEventListener("keydown", reel);
         reelingBar.remove();
         isReeling = false;
-        retractLine(); // Retract the line after finishing
+        catchFish(fish); // Catch the fish
+        retractLine(); // Retract the line
     }
 }
 
@@ -143,6 +146,7 @@ function catchFish(fish) {
     // Remove fish from the lake
     fish.remove();
     fishInLake = fishInLake.filter((f) => f !== fish); // Update the fish array
+    console.log(`${fishName} caught!`);
 }
 
 // Initialize the Game
