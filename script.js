@@ -109,7 +109,7 @@ function startReelingMinigame(fish) {
         progressBar.style.width = `${progress}%`;
         if (progress >= 100) {
             clearInterval(reelingInterval);
-            finishReeling(fish);
+            finishReeling(fish); // Pass the fish to finishReeling
         }
     }, 200); // Progress bar increases over time
 
@@ -124,11 +124,11 @@ function startReelingMinigame(fish) {
 
     // Cleanup once reeling is finished
     function finishReeling() {
-        document.removeEventListener("keydown", reel);
-        reelingBar.remove();
-        isReeling = false;
+        document.removeEventListener("keydown", reel); // Remove keydown listener
+        reelingBar.remove(); // Remove progress bar UI
         catchFish(fish); // Catch the fish
         retractLine(); // Retract the line
+        activeFish = null; // Reset the active fish
     }
 }
 
